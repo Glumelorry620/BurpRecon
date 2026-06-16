@@ -1,0 +1,32 @@
+# ─────────────────────────────────────────────────────────
+#  BurpRecon — Python dependencies
+#  Install: pip install -r requirements.txt
+# ─────────────────────────────────────────────────────────
+
+# Color output in terminal (cross-platform)
+colorama>=0.4.6
+
+# ─────────────────────────────────────────────────────────
+# External tools  — NOT pip packages (Go binaries)
+# Run:  powershell -ExecutionPolicy Bypass -File install_tools.ps1
+# ─────────────────────────────────────────────────────────
+#
+#  subfinder     ProjectDiscovery subdomain enumeration
+#                Auto-installed by install_tools.ps1
+#                Manual: https://github.com/projectdiscovery/subfinder/releases
+#
+#  amass         OWASP passive subdomain enumeration
+#                Auto-installed by install_tools.ps1
+#                Manual: https://github.com/owasp-amass/amass/releases
+#
+#  httpx         ProjectDiscovery HTTP prober (live host detection)
+#                Auto-installed by install_tools.ps1
+#                Manual: https://github.com/projectdiscovery/httpx/releases
+#
+#  searchsploit  ExploitDB local search (requires WSL on Windows)
+#                WSL / Kali / Debian: sudo apt install exploitdb
+#                macOS: brew install exploitdb
+#                Windows: install_tools.ps1 handles the WSL prompt
+#                Fallback: BurpRecon uses NVD API automatically if not found
+# ─────────────────────────────────────────────────────────
+
